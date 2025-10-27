@@ -10,7 +10,7 @@ namespace EchoServer
     public class EchoServer
     {
         private readonly int _port;
-        private TcpListener _listener;
+        private TcpListener? _listener;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         //constuctor
@@ -76,12 +76,12 @@ namespace EchoServer
         public void Stop()
         {
             _cancellationTokenSource.Cancel();
-            _listener.Stop();
+            _listener?.Stop();
             _cancellationTokenSource.Dispose();
             Console.WriteLine("Server stopped.");
         }
 
-        public static async Task await Main(string[] args)
+        public static async Task Main(string[] args)
         {
             EchoServer server = new EchoServer(5000);
 
