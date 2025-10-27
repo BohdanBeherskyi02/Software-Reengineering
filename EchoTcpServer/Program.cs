@@ -10,7 +10,7 @@ namespace EchoServer
     public class EchoServer
     {
         private readonly int _port;
-        private required TcpListener _listener {get; init;}
+        private TcpListener _listener;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         //constuctor
