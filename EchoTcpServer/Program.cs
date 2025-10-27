@@ -54,7 +54,7 @@ namespace EchoServer
                     byte[] buffer = new byte[8192];
                     int bytesRead;
 
-                    while (!token.IsCancellationRequested && (bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
+                    while (!token.IsCancellationRequested && (bytesRead = await stream.ReadAsync(buffer.AsMemory(0, buffer.Length), token)) > 0)
                     {
                         // Echo back the received message
                         await stream.WriteAsync(buffer, 0, bytesRead, token);
@@ -86,7 +86,7 @@ namespace EchoServer
             EchoServer server = new EchoServer(5000);
 
             // Start the server in a separate task
-            _ = Task.Run(() => await server.StartAsync());
+            _ = Task.Run(() => server.StartAsync());
 
             string host = "127.0.0.1"; // Target IP
             int port = 60000;          // Target Port
