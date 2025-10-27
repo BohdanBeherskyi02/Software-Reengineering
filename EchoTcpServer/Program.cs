@@ -82,33 +82,32 @@ namespace EchoServer
         }
 
         public static async Task Main(string[] args)
+{
+    EchoServer server = new EchoServer(5000);
+    var serverTask = Task.Run(() => server.StartAsync());
+
+    string host = "127.0.0.1";
+    int port = 60000;
+    int intervalMilliseconds = 5000;
+
+    using (var sender = new UdpTimedSender(host, port))
+    {
+        Console.WriteLine("Press any key to stop sending...");
+        sender.StartSending(intervalMilliseconds);
+
+        Console.WriteLine("Press 'q' to quit...");
+        while (Console.ReadKey(intercept: true).Key != ConsoleKey.Q)
         {
-            EchoServer server = new EchoServer(5000);
-
-            // Start the server in a separate task
-            _ = Task.Run(() => server.StartAsync());
-
-            string host = "127.0.0.1"; // Target IP
-            int port = 60000;          // Target Port
-            int intervalMilliseconds = 5000; // Send every 3 seconds
-
-            using (var sender = new UdpTimedSender(host, port))
-            {
-                Console.WriteLine("Press any key to stop sending...");
-                sender.StartSending(intervalMilliseconds);
-
-                Console.WriteLine("Press 'q' to quit...");
-                while (Console.ReadKey(intercept: true).Key != ConsoleKey.Q)
-                {
-                    // Just wait until 'q' is pressed
-                }
-
-                sender.StopSending();
-                server.Stop();
-                Console.WriteLine("Sender stopped.");
-            }
         }
+
+        sender.StopSending();
+        server.Stop();
+        Console.WriteLine("Sender stopped.");
     }
+
+    await serverTask; // ✅ awaited before Main exits
+}
+
 
 
     public class UdpTimedSender : IDisposable
