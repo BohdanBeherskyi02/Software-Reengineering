@@ -121,7 +121,7 @@ public class NetSdrClientTests
     {
 
         //act
-        await _client.ChangeFrequencyAsync();
+        await _client.ChangeFrequencyAsync(20000000, 1);
 
         //assert
         //No exception thrown
