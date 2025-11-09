@@ -116,5 +116,4 @@ public class NetSdrClientTests
     }
 
     //TODO: cover the rest of the NetSdrClient code here
-    
 }
