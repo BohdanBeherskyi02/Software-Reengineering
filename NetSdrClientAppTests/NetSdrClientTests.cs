@@ -116,4 +116,31 @@ public class NetSdrClientTests
     }
 
     //TODO: cover the rest of the NetSdrClient code here
+    [Test]
+    public async Task ChangeFrequencyNoConnectionTest()
+    {
+        //Arrange - no connection established
+        _tcpMock.Setup(tcp => tcp.Connected).Returns(false);
+
+        //Act
+        await _client.ChangeFrequencyAsync(14250000, 1);
+
+        //Assert - no messages should be sent
+        _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Never);
+    }
+
+    [Test]
+    public async Task ChangeFrequencyAsync_WhenConnected_ShouldSendCorrectMessage()
+    {
+        //Arrange
+        await ConnectAsyncTest();
+        long frequency = 14250000; // 14.25 MHz
+        int channel = 1;
+        int initialCallCount = 3; // ConnectAsync makes 3 calls
+
+        //Act
+        await _client.ChangeFrequencyAsync(frequency, channel);
+
+        //Assert - verify one more call was made after ConnectAsync
+        _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Exactly(initialCallCount + 1));
 }
