@@ -117,13 +117,17 @@ public class NetSdrClientTests
 
     //TODO: cover the rest of the NetSdrClient code here
     [Test]
-    public async Task ChangeFrequencyNoConnectionTest()
+    public async Task ChangeFrequencyTest()
     {
+        //Arrange 
+        await ConnectAsyncTest();
+        
         //act
         await _client.ChangeFrequencyAsync(20000000, 1);
 
         //assert
         //No exception thrown
+        _tcpMock.VerifyGet(tcp => tcp.Connected, Times.AtLeastOnce);
         _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Never);
     }
 }
