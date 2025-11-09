@@ -143,4 +143,5 @@ public class NetSdrClientTests
 
         //Assert - verify one more call was made after ConnectAsync
         _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Exactly(initialCallCount + 1));
+    }
 }
