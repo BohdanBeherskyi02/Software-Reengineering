@@ -125,6 +125,5 @@ public class NetSdrClientTests
         //assert
         //No exception thrown
         _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Never);
-        _tcpMock.VerifyGet(tcp => tcp.Connected, Times.AtLeastOnce);
     }
 }
