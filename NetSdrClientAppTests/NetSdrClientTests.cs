@@ -144,4 +144,39 @@ public class NetSdrClientTests
         //Assert - verify one more call was made after ConnectAsync
         _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Exactly(initialCallCount + 1));
     }
+
+    [Test]
+    public async Task ChangeFrequencyAsync_WithDifferentChannels_ShouldWork()
+    {
+        //Arrange
+        await ConnectAsyncTest();
+        int initialCallCount = 3;
+
+        //Act & Assert for channel 0
+        await _client.ChangeFrequencyAsync(7000000, 0);
+        _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Exactly(initialCallCount + 1));
+
+        //Act & Assert for channel 2
+        await _client.ChangeFrequencyAsync(21000000, 2);
+        _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), Times.Exactly(initialCallCount + 2));
+    }
+
+    [Test]
+    public async Task ChangeFrequencyAsync_MultipleFrequencies_ShouldSendEachTime()
+    {
+        //Arrange
+        await ConnectAsyncTest();
+        var frequencies = new[] { 7000000L, 14000000L, 21000000L, 28000000L };
+        int initialCalls = 3;
+
+        //Act
+        foreach (var freq in frequencies)
+        {
+            await _client.ChangeFrequencyAsync(freq, 0);
+        }
+
+        //Assert
+        _tcpMock.Verify(tcp => tcp.SendMessageAsync(It.IsAny<byte[]>()), 
+            Times.Exactly(initialCalls + frequencies.Length));
+    }
 }
