@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
-
-namespace NetSdrClientApp.Networking.Interfaces
+namespace NetSdrClientApp.Networking
 {
-    public interface ITcpListener
+    public interface IUdpClient
     {
-        void Start();
-        void Stop();
-        Task<ITcpClient> AcceptTcpClientAsync();
+        event EventHandler<byte[]>? MessageReceived;
+
+        Task StartListeningAsync();
+
+        void StopListening();
+        
+        void Exit();
     }
 }
