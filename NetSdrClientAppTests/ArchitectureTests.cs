@@ -18,7 +18,7 @@ namespace NetSdrClientAppTests
                 .HaveDependencyOn("EchoServer")
                 .GetResult();
 
-            Assert.That(result.IsSuccessful = false, Is.True);
+            Assert.That(result.IsSuccessful, Is.True);
         }
 
         [Test]
