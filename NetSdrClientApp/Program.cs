@@ -1,6 +1,5 @@
 ﻿using NetSdrClientApp;
 using NetSdrClientApp.Networking;
-using EchoServer
 
 Console.WriteLine(@"Usage:
 C - connect
