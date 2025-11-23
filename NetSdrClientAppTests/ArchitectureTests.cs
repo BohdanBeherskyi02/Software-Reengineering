@@ -14,7 +14,7 @@ namespace NetSdrClientAppTests
             var result = Types.InAssembly(typeof(NetSdrClientApp.NetSdrClient).Assembly)
                 .That()
                 .ResideInNamespace("NetSdrClientApp")
-                .ShouldNot()
+                .Should()
                 .HaveDependencyOn("EchoServer")
                 .GetResult();
 
