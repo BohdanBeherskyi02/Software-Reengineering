@@ -9,6 +9,7 @@ namespace EchoServer
 {
     public class EchoServer
     {
+        private int example;
         private readonly int _port;
         private TcpListener? _listener;
         private readonly CancellationTokenSource _cancellationTokenSource;
